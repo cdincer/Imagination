@@ -2,8 +2,9 @@ version: '2.2'
 
 services:
 
-  your_service:
+  my_server:
     # Please add your service here and serve it on port 5000.
+    image: my_imagination_server
     build:
       dockerfile: Dockerfile
       context: .
@@ -12,6 +13,8 @@ services:
     depends_on:
       - jaeger
       - httpbin
+    ports:
+    - 5000:5000
 
   jaeger:
     image: jaegertracing/all-in-one:latest
