@@ -1,4 +1,10 @@
-# Feel free to replace this with a more appropriate Dockerfile.
+FROM alpine
+RUN apk update
+CMD ["apk", "fetch", "coffee"]
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+ENV ASPNETCORE_URLS=http://+:5000
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
@@ -15,7 +21,3 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Imagination.Server.dll"]
-
-FROM alpine
-RUN apk update
-CMD ["apk", "fetch", "coffee"]
