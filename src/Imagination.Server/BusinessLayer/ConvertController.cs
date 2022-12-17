@@ -13,17 +13,12 @@ using System.Drawing;
 using System.Collections.Specialized;
 using System.Text;
 
-namespace Imagination.Controllers
+namespace Imagination.BusinessLayer
 {
     [ApiController]
     [Route("[controller]")]
     public class ConvertController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<ConvertController> _logger;
 
         public ConvertController(ILogger<ConvertController> logger)
@@ -36,8 +31,6 @@ namespace Imagination.Controllers
         {
             var myRequest = Request;
             Stream requestBody = myRequest.Body;
-            //Goal is stream to byte array
-            //string path = @"C:\Users\Can\Documents\Visual Studio Code\Imagination\resources2\"+Guid.NewGuid()+".jpg";
             byte[] items;
             using (var memoryStream = new MemoryStream())
             {
@@ -45,8 +38,7 @@ namespace Imagination.Controllers
                 items = memoryStream.ToArray();
             }
 
-
-            string path = @"C:\Users\Can\Documents\Visual Studio Code\Imagination\resources2\"+Guid.NewGuid()+".jpg";
+            string path = @"C:\Users\Can\Documents\Visual Studio Code\Imagination\resources2\"+Guid.NewGuid()+".jpeg";
             using (FileStream fs = System.IO.File.Create(path))
             {
                 // Add some information to the file.
@@ -54,8 +46,6 @@ namespace Imagination.Controllers
             }
 
             Console.WriteLine("aaa");
-
-            Console.WriteLine("bbb");
         }
     }
 }
