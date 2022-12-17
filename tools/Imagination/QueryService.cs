@@ -22,7 +22,9 @@ namespace Imagination
             _client = client;
             _lifetime = lifetime;
             _log = log;
-            _options = options.Value;
+            TestFileOptions newItems = new TestFileOptions();
+            newItems.BaseDirectory = "C:\\Users\\Can\\Documents\\Visual Studio Code\\Imagination\\resources";
+            _options = newItems;
         }
 
         /// <inheritdoc />
