@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Runtime.Caching;
 
 namespace Imagination.DataLayer
 {
@@ -15,8 +16,9 @@ namespace Imagination.DataLayer
 
         public ImaginationContext()
         {
-            var ConfigData = System.IO.File.ReadAllText("Configuration/Config.json");
-            var ConfigRules = JsonConvert.DeserializeObject<List<ConfigEntity>>(ConfigData);
+            ObjectCache cache = System.Runtime.Caching.MemoryCache.Default;
+            string fileContents = cache["ConfigRules"] as string;
+            var ConfigRules = JsonConvert.DeserializeObject<List<ConfigEntity>>(fileContents);
             ConfigEntity DBFileLocation = ConfigRules.FirstOrDefault(x => x.Name == "DBFileLocation");
             ConfigEntity DBFileName = ConfigRules.FirstOrDefault(x => x.Name == "DBFileName");
             string path = Directory.GetCurrentDirectory() + DBFileLocation.Value;

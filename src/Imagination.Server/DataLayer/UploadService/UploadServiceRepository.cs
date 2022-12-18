@@ -10,6 +10,7 @@ using Serilog.Sinks.File;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Linq;
+using System.Runtime.Caching;
 
 namespace Imagination.DataLayer.UploadService
 {
@@ -30,11 +31,12 @@ namespace Imagination.DataLayer.UploadService
                 string FileName = Guid.NewGuid().ToString();
                 int FileSize = items.Length;
                 ProcessBeginLog(FileSize, FileName);
-                var ConfigData = System.IO.File.ReadAllText("Configuration/Config.json");
-                var ConfigRules = JsonConvert.DeserializeObject<List<ConfigEntity>>(ConfigData);
+                ObjectCache cache = System.Runtime.Caching.MemoryCache.Default;
+                string fileContents = cache["ConfigRules"] as string;
+                var ConfigRules = JsonConvert.DeserializeObject<List<ConfigEntity>>(fileContents);
                 ConfigEntity FileSavingDetails = ConfigRules.FirstOrDefault(x => x.Name == "ProcessedFiles");
                 ConfigEntity FileSavingExtension = ConfigRules.FirstOrDefault(x => x.Name == "FileExtension");
-                string path = Directory.GetCurrentDirectory()+ FileSavingDetails.Value + FileName + FileSavingExtension.Value;
+                string path = Directory.GetCurrentDirectory()+ FileSavingDetails.Value + FileName + FileSavingExtension.Value;            
                 using (FileStream fs = File.Create(path))
                 {
                     // Add some information to the file.
