@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "ProcessedFiles",
+    "Description": "Where we will be putting processedFiles",
+    "Value": "\\ProcessedFiles\\"
+  },
+  {
+    "Name": "FileExtension",
+    "Description": "What the processed files extension is going to be",
+    "Value": ".jpeg"
+  },
+  {
+    "Name": "DBFileLocation",
+    "Description": "Where Our Database File going to be",
+    "Value": "\\DB\\"
+  },
+  {
+    "Name": "DBFileName",
+    "Description": "What Our Database File is going to be named as",
+    "Value": "blogging.db"
+  }
+]
