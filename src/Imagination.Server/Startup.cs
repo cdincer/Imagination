@@ -1,3 +1,4 @@
+using Imagination.DataLayer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +30,7 @@ namespace Imagination
                 .AddHttpClientInstrumentation()
                 .AddJaegerExporter()
                 .AddSource(Program.Telemetry.Name));
-
+            services.AddEntityFrameworkSqlite().AddDbContext<ImaginationContext>();
             services.AddControllers();
         }
 

@@ -17,6 +17,6 @@
   {
     "Name": "DBFileName",
     "Description": "What Our Database File is going to be named as",
-    "Value": "blogging.db"
+    "Value": "logging.db"
   }
 ]

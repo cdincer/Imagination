@@ -14,11 +14,13 @@ namespace Imagination.DataLayer
     {
         public string DbPath { get; }
 
-        public ImaginationContext()
+        public ImaginationContext(DbContextOptions<ImaginationContext> options) : base(options)
         {
-            ObjectCache cache = System.Runtime.Caching.MemoryCache.Default;
-            string fileContents = cache["ConfigRules"] as string;
-            var ConfigRules = JsonConvert.DeserializeObject<List<ConfigEntity>>(fileContents);
+            //I wanted to make a easily editable way of creating and placing files.
+            //These things normally wouldn't be read from a json file. I would take them from a cached file.
+            //Because of  dotnet ef database update behaviour I was forced to take them from a json file every time.
+            var ConfigData = System.IO.File.ReadAllText("Configuration/Config.json");
+            var ConfigRules = JsonConvert.DeserializeObject<List<ConfigEntity>>(ConfigData);
             ConfigEntity DBFileLocation = ConfigRules.FirstOrDefault(x => x.Name == "DBFileLocation");
             ConfigEntity DBFileName = ConfigRules.FirstOrDefault(x => x.Name == "DBFileName");
             string path = Directory.GetCurrentDirectory() + DBFileLocation.Value;
