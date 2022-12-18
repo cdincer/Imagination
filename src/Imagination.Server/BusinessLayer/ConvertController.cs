@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using System.Drawing;
 using System.Collections.Specialized;
 using System.Text;
+using Imagination.DataLayer.UploadService;
+using Imagination.DataLayer;
 
 namespace Imagination.BusinessLayer
 {
@@ -20,32 +22,29 @@ namespace Imagination.BusinessLayer
     public class ConvertController : ControllerBase
     {
         private readonly ILogger<ConvertController> _logger;
+        private readonly ImaginationContext _context;
+        private readonly IUploadServiceRepository _UploadServiceRepo;
 
-        public ConvertController(ILogger<ConvertController> logger)
+        public ConvertController(ImaginationContext context,ILogger<ConvertController> logger, IUploadServiceRepository UploadServiceRepo)
         {
             _logger = logger;
+            _UploadServiceRepo = UploadServiceRepo;
+            _context = context;
         }
 
         [HttpPost]
-        public async Task TakeAsync( CancellationToken cancellationToken)
+        public async Task TakeAsync(CancellationToken cancellationToken)
         {
             var myRequest = Request;
             Stream requestBody = myRequest.Body;
             byte[] items;
+            string FileName = Guid.NewGuid().ToString();
             using (var memoryStream = new MemoryStream())
             {
                 await requestBody.CopyToAsync(memoryStream);
                 items = memoryStream.ToArray();
             }
-
-            string path = @"C:\Users\Can\Documents\Visual Studio Code\Imagination\resources2\"+Guid.NewGuid()+".jpeg";
-            using (FileStream fs = System.IO.File.Create(path))
-            {
-                // Add some information to the file.
-                fs.Write(items, 0, items.Length);
-            }
-
-            Console.WriteLine("aaa");
+            _UploadServiceRepo.AddUploadEntity(items);
         }
     }
 }

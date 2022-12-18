@@ -9,5 +9,6 @@ namespace Imagination.Entities
         public string FileName { get; set; }
         public DateTime UploadDate { get; set; }
         public int FileSize { get; set; }
+        public string Status { get; set; }
     }
 }
