@@ -19,14 +19,10 @@ namespace Imagination
 
         public QueryService(ProcessPictureClient client, IHostApplicationLifetime lifetime, ILogger<QueryService> log, IOptions<TestFileOptions> options)
         {
-            //Left it for debugging in VS.
-            //TO:DO REMOVE MAGIC STRINGS
-            TestFileOptions newItems = new TestFileOptions();
-            newItems.BaseDirectory = "C:\\Users\\Can\\Documents\\Visual Studio Code\\Imagination\\resources";
             _client = client;
             _lifetime = lifetime;
             _log = log;
-            _options =   newItems;
+            _options = options.Value;
         }
 
         /// <inheritdoc />
