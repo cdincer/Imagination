@@ -28,7 +28,7 @@ namespace Imagination.DataLayer.UploadService
                 int FileSize = items.Length;
                 ProcessBeginLog(FileSize, FileName);
                 //TO:DO REMOVE MAGIC STRINGS
-                string path = @"C:\Users\Can\Documents\Visual Studio Code\Imagination\resources2\" + FileName + ".jpeg";
+                string path = Directory.GetCurrentDirectory()+"\\ProcessedFiles\\" + FileName + ".jpeg";
                 using (FileStream fs = File.Create(path))
                 {
                     // Add some information to the file.

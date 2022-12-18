@@ -15,7 +15,7 @@ namespace Imagination.DataLayer
             //For the time being hardcoded file path.
             //var folder = Environment.SpecialFolder.LocalApplicationData;
             //var path = Environment.GetFolderPath(folder);
-            var path = @"C:\Users\Can\Documents\Visual Studio Code\Imagination\DB";
+            string path = Directory.GetCurrentDirectory() + "\\DB\\";
             DbPath = System.IO.Path.Join(path, "blogging.db");
         }
 
