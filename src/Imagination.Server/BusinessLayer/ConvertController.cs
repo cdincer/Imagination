@@ -14,6 +14,8 @@ using System.Collections.Specialized;
 using System.Text;
 using Imagination.DataLayer.UploadService;
 using Imagination.DataLayer;
+using Newtonsoft.Json.Linq;
+using Imagination.BusinessLayer.Rules;
 
 namespace Imagination.BusinessLayer
 {
@@ -33,18 +35,36 @@ namespace Imagination.BusinessLayer
         }
 
         [HttpPost]
-        public async Task TakeAsync(CancellationToken cancellationToken)
+        public async Task<string> TakeAsync(CancellationToken cancellationToken)
         {
+
             var myRequest = Request;
             Stream requestBody = myRequest.Body;
             byte[] items;
             string FileName = Guid.NewGuid().ToString();
+            byte[] spareFile = new byte[3];
+            string result = "";
+
             using (var memoryStream = new MemoryStream())
             {
                 await requestBody.CopyToAsync(memoryStream);
                 items = memoryStream.ToArray();
             }
-            _UploadServiceRepo.AddUploadEntity(items);
+            Array.Copy(items,0,spareFile,0, 3);
+            PhotoChecker photoChecker = new PhotoChecker();
+            bool Judgement = photoChecker.PhotoCheckProcess(spareFile, items.Length);
+
+            if(Judgement)
+            {
+                _UploadServiceRepo.AddUploadEntity(items);
+                result = "Upload succesful";
+            }
+            else
+            {
+                result = "Please check your file format or your file size.";
+            }
+
+            return result;
         }
     }
 }

@@ -1,0 +1,12 @@
+[
+  {
+    "Name": "Jpg",
+    "Description": "Jpg byte value",
+    "Value": "255,216,255"
+  },
+   {
+    "Name": "Png",
+    "Description": "Png byte value",
+    "Value": "137, 80, 78"
+  }
+]
