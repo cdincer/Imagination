@@ -50,6 +50,12 @@ namespace Imagination.BusinessLayer
                 await requestBody.CopyToAsync(memoryStream);
                 items = memoryStream.ToArray();
             }
+
+            if(items.Length == 0)
+            {
+                return "Please check your file format or your file size.";
+            }
+
             Array.Copy(items,0,spareFile,0, 3);
             PhotoChecker photoChecker = new PhotoChecker();
             bool Judgement = photoChecker.PhotoCheckProcess(spareFile, items.Length);

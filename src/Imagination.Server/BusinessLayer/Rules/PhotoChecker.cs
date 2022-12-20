@@ -13,7 +13,7 @@ namespace Imagination.BusinessLayer.Rules
             {
                 var rules = new List<IPhotoCheckRule>();
                 rules.Add(new PhotoTypeRule());
-        
+                rules.Add(new PhotoSizeRule());
 
                 var engine = new PhotoCheckRuleEngine(rules);
                 return engine.PhotoCheckRules(FilePiece, FileSize);

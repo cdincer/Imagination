@@ -14,14 +14,11 @@ namespace Imagination.BusinessLayer.Rules
         {
             bool result = false;
             try
-            {
-              
-
+            {       
                 ObjectCache cache = System.Runtime.Caching.MemoryCache.Default;
                 string FileRulesFile = cache["FileRules"] as string;
                 var FileExtensions = JsonConvert.DeserializeObject<List<ConfigEntity>>(FileRulesFile);
-            
-
+           
                 foreach (ConfigEntity configEntity in FileExtensions)
                 {
                     string[] ExtensionsChars = configEntity.Value.Split(',');

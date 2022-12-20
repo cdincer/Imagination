@@ -4,9 +4,19 @@
     "Description": "Jpg byte value",
     "Value": "255,216,255"
   },
-   {
+  {
     "Name": "Png",
     "Description": "Png byte value",
     "Value": "137, 80, 78"
+  },
+  {
+    "Name": "MinFileSize",
+    "Description": "Minimum File Size -- Invalid PNG",
+    "Value": "51"
+  },
+  {
+    "Name": "MaxFileSize",
+    "Description": "Maximum File Size -- Big JPG",
+    "Value": "10174705"
   }
 ]
