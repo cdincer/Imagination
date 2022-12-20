@@ -32,20 +32,23 @@ namespace Imagination
             OpenTelemetry.Sdk.SetDefaultTextMapPropagator(new B3Propagator());
 
             ObjectCache cache = System.Runtime.Caching.MemoryCache.Default;
-            string fileContents = cache["filecontents"] as string;
+            string ConfigContents = cache["ConfigContents"] as string;
+            string FileRuleContents = cache["FileRuleContents"] as string;
 
-            if (fileContents == null)
+            if (ConfigContents == null)
             {
-                CacheItemPolicy policy = new CacheItemPolicy();
+                CacheItemPolicy ConfigContentPolicy = new CacheItemPolicy();
                 List<string> filePaths = new List<string>();
                 filePaths.Add("Configuration/Config.json");
-                policy.ChangeMonitors.Add(new
-                HostFileChangeMonitor(filePaths));
-                // Fetch the file contents.  
-                fileContents =
-                    File.ReadAllText("Configuration/Config.json");
+                ConfigContentPolicy.ChangeMonitors.Add(new HostFileChangeMonitor(filePaths));
+                ConfigContents =File.ReadAllText("Configuration/Config.json");
+                cache.Add("ConfigRules", ConfigContents, ConfigContentPolicy);
 
-                cache.Set("ConfigRules", fileContents, policy);
+                CacheItemPolicy FileRulePolicy = new CacheItemPolicy();
+                filePaths.Clear();
+                filePaths.Add("Configuration/FileRules.json");
+                ConfigContents =File.ReadAllText("Configuration/FileRules.json");
+                cache.Add("FileRules", ConfigContents, FileRulePolicy);
             }
 
             var builder = WebApplication.CreateBuilder(args);

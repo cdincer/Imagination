@@ -10,18 +10,19 @@ namespace Imagination.BusinessLayer.Rules
 {
     public class PhotoTypeRule : IPhotoCheckRule
     {
-        private static readonly byte[] bytes = { 255, 216, 255 };//jpg format checker.caching file candidate
-        private static readonly byte[] bytes2 = { 137, 80, 78 };//png format checker.caching file candidate
         public bool CheckPhotoRule(byte[] FilePiece, int FileSize)
         {
             bool result = false;
             try
             {
-                var FileRulesFile = System.IO.File.ReadAllText("Configuration/FileRules.json");
-                var FileRulesList = JsonConvert.DeserializeObject<List<ConfigEntity>>(FileRulesFile);
-                List<ConfigEntity> FileExtensions = FileRulesList.ToList();
+              
 
-                foreach(ConfigEntity configEntity in FileExtensions)
+                ObjectCache cache = System.Runtime.Caching.MemoryCache.Default;
+                string FileRulesFile = cache["FileRules"] as string;
+                var FileExtensions = JsonConvert.DeserializeObject<List<ConfigEntity>>(FileRulesFile);
+            
+
+                foreach (ConfigEntity configEntity in FileExtensions)
                 {
                     string[] ExtensionsChars = configEntity.Value.Split(',');
                     byte[] ExtensionArray = new byte[ExtensionsChars.Length];
