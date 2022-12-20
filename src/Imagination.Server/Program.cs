@@ -42,13 +42,15 @@ namespace Imagination
                 filePaths.Add("Configuration/Config.json");
                 ConfigContentPolicy.ChangeMonitors.Add(new HostFileChangeMonitor(filePaths));
                 ConfigContents =File.ReadAllText("Configuration/Config.json");
-                cache.Add("ConfigRules", ConfigContents, ConfigContentPolicy);
+                var ConfigRuleContents = JsonConvert.DeserializeObject<List<ConfigEntity>>(ConfigContents);
+                cache.Add("ConfigRules", ConfigRuleContents, ConfigContentPolicy);
 
                 CacheItemPolicy FileRulePolicy = new CacheItemPolicy();
                 filePaths.Clear();
                 filePaths.Add("Configuration/FileRules.json");
-                ConfigContents =File.ReadAllText("Configuration/FileRules.json");
-                cache.Add("FileRules", ConfigContents, FileRulePolicy);
+                FileRuleContents = File.ReadAllText("Configuration/FileRules.json");
+                var ImageFileRules = JsonConvert.DeserializeObject<List<ConfigEntity>>(FileRuleContents);
+                cache.Add("FileRules", ImageFileRules, FileRulePolicy);
             }
 
             var builder = WebApplication.CreateBuilder(args);

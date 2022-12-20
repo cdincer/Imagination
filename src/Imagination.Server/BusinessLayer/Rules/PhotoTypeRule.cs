@@ -16,9 +16,9 @@ namespace Imagination.BusinessLayer.Rules
             try
             {       
                 ObjectCache cache = System.Runtime.Caching.MemoryCache.Default;
-                string FileRulesFile = cache["FileRules"] as string;
-                var FileExtensions = JsonConvert.DeserializeObject<List<ConfigEntity>>(FileRulesFile);
-           
+                List<ConfigEntity> FileExtensions = cache["FileRules"] as List<ConfigEntity>;
+
+
                 foreach (ConfigEntity configEntity in FileExtensions)
                 {
                     string[] ExtensionsChars = configEntity.Value.Split(',');

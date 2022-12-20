@@ -16,10 +16,9 @@ namespace Imagination.BusinessLayer.Rules
             try
             {
                 ObjectCache cache = System.Runtime.Caching.MemoryCache.Default;
-                string FileRulesFile = cache["FileRules"] as string;
-                var FileSizeRules = JsonConvert.DeserializeObject<List<ConfigEntity>>(FileRulesFile);
-                string FileSizeMin = FileSizeRules.FirstOrDefault(s => s.Name == "MinFileSize").Value;
-                string FileSizeMax = FileSizeRules.FirstOrDefault(s => s.Name == "MaxFileSize").Value;
+                List<ConfigEntity> FileRulesFile = cache["FileRules"] as List<ConfigEntity>;
+                string FileSizeMin = FileRulesFile.FirstOrDefault(s => s.Name == "MinFileSize").Value;
+                string FileSizeMax = FileRulesFile.FirstOrDefault(s => s.Name == "MaxFileSize").Value;
 
              
                 if(FileSize <= int.Parse(FileSizeMin))

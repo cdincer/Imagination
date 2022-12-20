@@ -32,8 +32,7 @@ namespace Imagination.DataLayer.UploadService
                 int FileSize = items.Length;
                 ProcessBeginLog(FileSize, FileName);
                 ObjectCache cache = System.Runtime.Caching.MemoryCache.Default;
-                string fileContents = cache["ConfigRules"] as string;
-                var ConfigRules = JsonConvert.DeserializeObject<List<ConfigEntity>>(fileContents);
+                List<ConfigEntity> ConfigRules = cache["ConfigRules"] as List<ConfigEntity>;
                 ConfigEntity FileSavingDetails = ConfigRules.FirstOrDefault(x => x.Name == "ProcessedFiles");
                 ConfigEntity FileSavingExtension = ConfigRules.FirstOrDefault(x => x.Name == "FileExtension");
                 string path = Directory.GetCurrentDirectory()+ FileSavingDetails.Value + FileName + FileSavingExtension.Value;            
