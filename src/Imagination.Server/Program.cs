@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,6 +8,7 @@ using Imagination.DataLayer.UploadService;
 using Imagination.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -58,7 +60,13 @@ namespace Imagination
             builder.Services.AddDbContext<ImaginationContext>();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddScoped<IUploadServiceRepository, UploadServiceRepository>();
+          
             var app = builder.Build();
+            using (var scope = app.Services.CreateScope())
+            {   //Critical for EF starting up properly.
+                var dbContext = scope.ServiceProvider.GetRequiredService<ImaginationContext>();
+                dbContext.Database.Migrate();
+            }
             app.MapControllers();
             app.Run();
             CreateHostBuilder(args).Build().Run();

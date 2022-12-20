@@ -16,6 +16,7 @@ using Imagination.DataLayer.UploadService;
 using Imagination.DataLayer;
 using Newtonsoft.Json.Linq;
 using Imagination.BusinessLayer.Rules;
+using Microsoft.EntityFrameworkCore;
 
 namespace Imagination.BusinessLayer
 {

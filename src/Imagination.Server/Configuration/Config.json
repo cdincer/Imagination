@@ -10,11 +10,6 @@
     "Value": ".jpeg"
   },
   {
-    "Name": "DBFileLocation",
-    "Description": "Where Our Database File going to be",
-    "Value": "\\DB\\"
-  },
-  {
     "Name": "DBFileName",
     "Description": "What Our Database File is going to be named as",
     "Value": "logging.db"
