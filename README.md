@@ -5,7 +5,7 @@ common web image file formats (e.g., PNG) into JPEG.
 
 ## Installation / General Notes
 
-- Made with Visual Studio Code 2022 on Windows, using sqlite for database.
+- Made with Visual Studio Code 2022 on Windows, using sqlite for database, Entity Framework for ORM.
 - docker-compose up -- build to start the main service.
 - dotnet run --project tools/Imagination -- to send the test out files.
 - Or just use postman with a default POST request at "http://localhost:5000/convert" 
