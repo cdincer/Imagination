@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Runtime.Caching;
+using Microsoft.EntityFrameworkCore;
 
 namespace Imagination.DataLayer.UploadService
 {
@@ -41,6 +42,7 @@ namespace Imagination.DataLayer.UploadService
                     // Add some information to the file.
                     fs.Write(items, 0, items.Length);
                 }
+                ProcessEndLog(FileSize, FileName);
             }
             catch (Exception ex)
             {
@@ -60,10 +62,19 @@ namespace Imagination.DataLayer.UploadService
             BeginProcess.Status = "Begin";
             BeginProcess.FileSize = FileSize;
             BeginProcess.FileName = FileName;
-            BeginProcess.UploadDate = DateTime.Now;
+            BeginProcess.UploadBeginDate = DateTime.Now;
             _context.UploadEntity.Add(BeginProcess);
             await _context.SaveChangesAsync();
             return BeginProcess;
+        }
+
+        public async Task<UploadEntity> ProcessEndLog(int FileSize, string FileName)
+        {
+            UploadEntity EndProcess = await _context.UploadEntity.FirstOrDefaultAsync(s => s.FileSize == FileSize && s.FileName == FileName);
+            EndProcess.Status = "Completed";
+            EndProcess.UploadEndDate = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return EndProcess;
         }
     }
 }
