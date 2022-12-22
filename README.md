@@ -11,4 +11,4 @@ common web image file formats (e.g., PNG) into JPEG.
 - Or just use postman with a default POST request at "http://localhost:5000/convert" 
   and send a image file with extensions jpg or png.
 - Those Images extensions previously mentioned are rules in Configuration/FileRules.json, 
-  I arbitrarily picked and choosed them. Same with Configuration/FileRules.json
+  I arbitrarily picked and chose them. Same with Configuration/FileRules.json
