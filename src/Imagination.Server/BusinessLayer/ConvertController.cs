@@ -36,7 +36,7 @@ namespace Imagination.BusinessLayer
         }
 
         [HttpPost]
-        public async Task<string> TakeAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> TakeAsync(CancellationToken cancellationToken)
         {
 
             var myRequest = Request;
@@ -54,7 +54,7 @@ namespace Imagination.BusinessLayer
 
             if(items.Length == 0)
             {
-                return "Please check your file format or your file size.";
+                return Ok("Please check your file format or your file size.");
             }
 
             Array.Copy(items,0,spareFile,0, 3);
@@ -71,7 +71,7 @@ namespace Imagination.BusinessLayer
                 result = "Please check your file format or your file size.";
             }
 
-            return result;
+            return Ok(result);
         }
     }
 }
