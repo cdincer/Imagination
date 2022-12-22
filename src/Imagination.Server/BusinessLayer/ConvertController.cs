@@ -17,6 +17,7 @@ using Imagination.DataLayer;
 using Newtonsoft.Json.Linq;
 using Imagination.BusinessLayer.Rules;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace Imagination.BusinessLayer
 {
@@ -44,7 +45,8 @@ namespace Imagination.BusinessLayer
             byte[] items;
             string FileName = Guid.NewGuid().ToString();
             byte[] spareFile = new byte[3];
-            string result = "";
+            string SavedPath = "";
+            
 
             using (var memoryStream = new MemoryStream())
             {
@@ -54,24 +56,27 @@ namespace Imagination.BusinessLayer
 
             if(items.Length == 0)
             {
-                return Ok("Please check your file format or your file size.");
+                throw new ApplicationException("Please check your file size or format");
             }
 
+            //Make it go through our rules filter.
             Array.Copy(items,0,spareFile,0, 3);
             PhotoChecker photoChecker = new PhotoChecker();
             bool Judgement = photoChecker.PhotoCheckProcess(spareFile, items.Length);
 
-            if(Judgement)
+          
+            if (Judgement)
             {
-                _UploadServiceRepo.AddUploadEntity(items);
-                result = "Upload succesful";
+                SavedPath = _UploadServiceRepo.AddUploadEntity(items);
             }
             else
             {
-                result = "Please check your file format or your file size.";
-            }
+                throw new ApplicationException("Please check your file size or format");
 
-            return Ok(result);
+            }
+            Byte[] b;
+            b = await System.IO.File.ReadAllBytesAsync(SavedPath);
+            return File(b, "image/jpeg");
         }
     }
 }

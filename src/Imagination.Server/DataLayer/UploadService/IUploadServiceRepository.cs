@@ -6,6 +6,6 @@ namespace Imagination.DataLayer.UploadService
 {
     public interface IUploadServiceRepository
     {
-        Task AddUploadEntity(byte[] items);
+       string AddUploadEntity(byte[] items);
     }
 }

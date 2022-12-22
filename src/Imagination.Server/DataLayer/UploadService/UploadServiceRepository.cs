@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Runtime.Caching;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 
 namespace Imagination.DataLayer.UploadService
 {
@@ -25,8 +26,9 @@ namespace Imagination.DataLayer.UploadService
         }
 
 
-        public async Task MakeImage(byte[] items)
+       string MakeImage(byte[] items)
         {
+            string path = "";
             try
             {
                 string FileName = Guid.NewGuid().ToString();
@@ -36,23 +38,25 @@ namespace Imagination.DataLayer.UploadService
                 List<ConfigEntity> ConfigRules = cache["ConfigRules"] as List<ConfigEntity>;
                 ConfigEntity FileSavingDetails = ConfigRules.FirstOrDefault(x => x.Name == "ProcessedFiles");
                 ConfigEntity FileSavingExtension = ConfigRules.FirstOrDefault(x => x.Name == "FileExtension");
-                string path = Directory.GetCurrentDirectory()+ FileSavingDetails.Value + FileName + FileSavingExtension.Value;            
+                path = Directory.GetCurrentDirectory()+ FileSavingDetails.Value + FileName + FileSavingExtension.Value;            
                 using (FileStream fs = File.Create(path))
                 {
                     // Add some information to the file.
                     fs.Write(items, 0, items.Length);
                 }
-                ProcessEndLog(FileSize, FileName);
+                ProcessEndLog(FileSize, FileName);      
             }
             catch (Exception ex)
             {
                 Log.Fatal(ex, "MakeImage Failed");
             }
+            return path;
         }
 
-        public async Task AddUploadEntity(byte[] items)
+        public  string AddUploadEntity(byte[] items)
         {
-            MakeImage(items);
+            string mySavedFile= MakeImage(items);
+            return mySavedFile;
         }
 
 
@@ -76,5 +80,7 @@ namespace Imagination.DataLayer.UploadService
             await _context.SaveChangesAsync();
             return EndProcess;
         }
+
+       
     }
 }
